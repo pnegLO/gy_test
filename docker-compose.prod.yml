@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  smart-apartment:
+    image: ghcr.io/YOUR_GITHUB_USERNAME/smart-apartment:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+    restart: always 

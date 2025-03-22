@@ -1,0 +1,25 @@
+# 忽略数据目录
+/data/
+
+# 忽略编译输出
+/backend/target/
+/frontend/dist/
+/frontend/node_modules/
+
+# 忽略日志
+*.log
+logs/
+
+# 忽略IDE文件
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# 忽略环境文件
+.env
+.env.local
+
+# 忽略Mac系统文件
+.DS_Store 

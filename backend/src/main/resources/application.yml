@@ -1,0 +1,50 @@
+spring:
+  datasource:
+    # 注释掉MySQL配置
+    # url: jdbc:mysql://8.130.124.225:3306/smart_apartment?useSSL=false&serverTimezone=UTC
+    # username: root
+    # password: 123456
+    # driver-class-name: com.mysql.cj.jdbc.Driver
+    # 使用SQLite配置（由SQLiteConfig类提供）
+    driver-class-name: org.sqlite.JDBC
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        # 修改为SQLite方言
+        dialect: com.smartapartment.config.SQLiteDialect
+        format_sql: true
+        # 添加以下配置以解决SQLite的一些兼容性问题
+        globally_quoted_identifiers: true
+  
+  # 添加以下SQL初始化配置
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      # 避免重复插入数据
+      continue-on-error: true
+  
+  # 添加前端静态资源配置
+  web:
+    resources:
+      static-locations: classpath:/static/
+  
+  # 添加JWT配置
+  security:
+    jwt:
+      secret: your-secret-key-must-be-at-least-32-characters-long
+      expiration: 86400000
+
+server:
+  port: 8080
+
+# 添加日志配置
+logging:
+  level:
+    com.smartapartment: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
