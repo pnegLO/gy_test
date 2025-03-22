@@ -21,7 +21,8 @@ COPY frontend/public ./public
 COPY frontend/babel.config.js ./
 COPY frontend/jsconfig.json ./
 COPY frontend/.eslintrc.js ./
-COPY frontend/.env.development ./
+# 创建.env.development文件而不是复制
+RUN echo 'VUE_APP_BASE_API = "/api"' > .env.development
 # 创建vue.config.js文件
 RUN echo 'const { defineConfig } = require("@vue/cli-service"); module.exports = defineConfig({ transpileDependencies: true });' > vue.config.js
 # 显示文件列表
