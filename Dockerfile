@@ -1,20 +1,18 @@
 # 使用官方Maven镜像作为构建环境
 FROM maven:3.8.4-openjdk-8 AS builder
 
-# 设置阿里云Maven镜像
-COPY settings.xml /usr/share/maven/conf/
-
 # 复制后端代码
 WORKDIR /app
 COPY backend/pom.xml /app/
-# 先下载依赖
-RUN mvn dependency:go-offline -B
+
+# 下载依赖（不使用自定义settings.xml）
+RUN mvn dependency:go-offline
 
 # 复制源代码
 COPY backend/src /app/src/
 
-# 构建后端（增加额外选项以提高构建稳定性）
-RUN mvn clean package -B -DskipTests -Dmaven.test.skip=true
+# 构建后端（简化构建命令）
+RUN mvn package -DskipTests
 
 # 最终阶段 - 只使用后端
 FROM openjdk:8-jre-slim
