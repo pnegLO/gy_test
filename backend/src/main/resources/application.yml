@@ -33,6 +33,11 @@ spring:
     resources:
       static-locations: classpath:/static/
   
+  # 添加API路径配置
+  mvc:
+    servlet:
+      path: /api
+  
   # 添加JWT配置
   security:
     jwt:
