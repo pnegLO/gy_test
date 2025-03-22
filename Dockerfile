@@ -39,10 +39,17 @@ RUN mkdir -p /app/static
 COPY --from=backend-build /app/backend/target/smart-apartment-0.0.1-SNAPSHOT.jar ./app.jar
 # 尝试复制前端构建文件
 RUN mkdir -p /tmp/dist
-COPY --from=frontend-build /app/frontend/dist /tmp/dist || echo "No dist folder found"
-RUN if [ -d "/tmp/dist" ] && [ "$(ls -A /tmp/dist)" ]; then cp -r /tmp/dist/* /app/static/; fi
+# 使用纯净的COPY命令，不使用||操作符
+COPY --from=frontend-build /app/frontend/dist/ /tmp/dist/
+# 使用单独的RUN命令检查dist目录并复制文件
+RUN if [ -d "/tmp/dist" ] && [ "$(ls -A /tmp/dist 2>/dev/null)" ]; then \
+    echo "复制前端文件到静态目录"; \
+    cp -r /tmp/dist/* /app/static/; \
+else \
+    echo "前端构建目录为空或不存在"; \
+fi
 # 显示静态目录内容
-RUN ls -la /app/static || echo "Static directory may be empty"
+RUN ls -la /app/static || echo "静态目录可能为空"
 # 暴露端口
 EXPOSE 8080
 # 启动应用
